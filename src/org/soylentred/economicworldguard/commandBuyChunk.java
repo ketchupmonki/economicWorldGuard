@@ -1,5 +1,8 @@
 package org.soylentred.economicworldguard;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -25,12 +28,14 @@ public class commandBuyChunk implements CommandExecutor {
 	public WorldGuardPlugin worldGuard;
 	private int buyPrice = 250;
 	Economy bank;
+	List<String> ignoreRegions;
 
-	public commandBuyChunk(boolean debug, Economy bank, int buyPrice, WorldGuardPlugin worldGuard) {
+	public commandBuyChunk(boolean debug, Economy bank, int buyPrice, WorldGuardPlugin worldGuard, List<?> list) {
 		this.debug = debug;
 		this.worldGuard = worldGuard;
 		this.buyPrice = buyPrice;
 		this.bank = bank;
+		this.ignoreRegions = (List<String>) list;
 	}
 
 	@Override
@@ -48,15 +53,28 @@ public class commandBuyChunk implements CommandExecutor {
 			RegionContainer container = worldGuard.getRegionContainer();
 			RegionQuery query = container.createQuery();
 			ApplicableRegionSet regions = query.getApplicableRegions(player.getLocation());
-
+			List<ProtectedRegion> sortedRegions = new ArrayList<ProtectedRegion>();
+			
+			//Filter out any regions that should be ignored as set in the plugin's config file.
+			for (ProtectedRegion region : regions) {
+				boolean filterOut = false;
+				for (String ignore : ignoreRegions) {
+					if (ignore.equalsIgnoreCase(region.getId())){
+						filterOut = true;
+					}
+				}
+				if (!filterOut){
+					sortedRegions.add(region);
+				}
+			}
+			
 			// Check for existing regions
-			if (regions.size() > 0) {
+			if (sortedRegions.size() > 0) {
 				player.sendMessage("Chunk can not be bought. There is already a region in this location.");
 				if (debug) {
-					Bukkit.getLogger()
-							.info("Region could not be created as there is already a region in this location.");
+					Bukkit.getLogger().info("Region could not be created as there is already a region in this location.");
 				}
-				return false;
+				return true;
 			}
 
 			// Check the player can afford a chunk
@@ -65,7 +83,7 @@ public class commandBuyChunk implements CommandExecutor {
 				if (debug) {
 					Bukkit.getLogger().info("Region could not be created as the player's balance is too low.");
 				}
-				return false;
+				return true;
 			}
 
 			// Buy the chunk
@@ -74,8 +92,13 @@ public class commandBuyChunk implements CommandExecutor {
 
 			//Collect basic info for the region
 			int chunkX = (int) (16 * (Math.floor(Math.abs(player.getLocation().getBlockX() / 16))));
+			if(player.getLocation().getBlockX() < 0){
+				chunkX = (chunkX * -1) - 15;
+			}
 			int chunkZ = (int) (16 * (Math.floor(Math.abs(player.getLocation().getBlockZ() / 16))));
-
+			if(player.getLocation().getBlockZ() < 0){
+				chunkZ = (chunkZ * -1) - 15;
+			}
 			String regionName = player.getName() + (chunkX / 16) + (chunkZ / 16);
 
 			// Create the region
@@ -105,6 +128,6 @@ public class commandBuyChunk implements CommandExecutor {
 				Bukkit.getLogger().info("User purchased chunk.");
 			}
 		}
-		return false;
+		return true;
 	}
 }

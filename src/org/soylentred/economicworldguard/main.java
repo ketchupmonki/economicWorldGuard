@@ -1,4 +1,7 @@
 package org.soylentred.economicworldguard;
+import java.util.Arrays;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -18,6 +21,8 @@ public class main extends JavaPlugin{
 		this.getConfig();
 		config.addDefault("chunkBuyPrice", 250);
 		config.addDefault("debug", false);
+		List<String> ignoreRegions = Arrays.asList();
+		config.addDefault("ignoreRegions", ignoreRegions);
 	    config.options().copyDefaults(true);
 	    saveConfig();
 	    
@@ -29,7 +34,7 @@ public class main extends JavaPlugin{
         }
 
 		//Register Commands
-		this.getCommand("buychunk").setExecutor(new commandBuyChunk(config.getBoolean("debug"), bank, config.getInt("chunkBuyPrice"), getWorldGuard()));
+		this.getCommand("buychunk").setExecutor(new commandBuyChunk(config.getBoolean("debug"), bank, config.getInt("chunkBuyPrice"), getWorldGuard(), config.getList("ignoreRegions")));
 		this.getCommand("evictchunk").setExecutor(new commandEvictChunk(config.getBoolean("debug"), getWorldGuard()));
 		this.getCommand("givechunk").setExecutor(new commandGiveChunk(config.getBoolean("debug")));
 		this.getCommand("sellchunk").setExecutor(new commandSellChunk(config.getBoolean("debug")));

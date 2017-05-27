@@ -31,8 +31,7 @@ public class commandEvictChunk implements CommandExecutor {
 			Player player = (Player) sender;
 
 			if (debug) {
-				Bukkit.getLogger().info("Command EvictChunk called by " + player.getDisplayName() + " at "
-						+ player.getLocation() + ".");
+				Bukkit.getLogger().info("Command EvictChunk called by " + player.getDisplayName() + " at " + player.getLocation() + ".");
 			}
 
 			// Get regions at the player's location
@@ -41,7 +40,13 @@ public class commandEvictChunk implements CommandExecutor {
 			ApplicableRegionSet regions = query.getApplicableRegions(player.getLocation());
 
 			int chunkX = (int) (16 * (Math.floor(Math.abs(player.getLocation().getBlockX() / 16))) / 16);
+			if(player.getLocation().getBlockX() < 0){
+				chunkX = chunkX * -1;
+			}
 			int chunkZ = (int) (16 * (Math.floor(Math.abs(player.getLocation().getBlockZ() / 16))) / 16);
+			if(player.getLocation().getBlockZ() < 0){
+				chunkZ = chunkZ * -1;
+			}
 
 			for (ProtectedRegion region : regions) {
 				if (region.getId().endsWith(Integer.toString(chunkX) + Integer.toString(chunkZ))) {
