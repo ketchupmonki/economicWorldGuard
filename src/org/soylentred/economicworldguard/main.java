@@ -20,6 +20,7 @@ public class main extends JavaPlugin{
 		//Get configs
 		this.getConfig();
 		config.addDefault("chunkBuyPrice", 250);
+		config.addDefault("chunkSellPrice", 125);
 		config.addDefault("debug", false);
 		List<String> ignoreRegions = Arrays.asList();
 		config.addDefault("ignoreRegions", ignoreRegions);
@@ -37,7 +38,7 @@ public class main extends JavaPlugin{
 		this.getCommand("buychunk").setExecutor(new commandBuyChunk(config.getBoolean("debug"), bank, config.getInt("chunkBuyPrice"), getWorldGuard(), config.getList("ignoreRegions")));
 		this.getCommand("evictchunk").setExecutor(new commandEvictChunk(config.getBoolean("debug"), getWorldGuard()));
 		this.getCommand("givechunk").setExecutor(new commandGiveChunk(config.getBoolean("debug")));
-		this.getCommand("sellchunk").setExecutor(new commandSellChunk(config.getBoolean("debug")));
+		this.getCommand("sellchunk").setExecutor(new commandSellChunk(config.getBoolean("debug"), bank, config.getInt("chunkSellPrice"), getWorldGuard()));
 	}
 	
 	public void onDisable(){}
