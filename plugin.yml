@@ -13,7 +13,7 @@ commands:
   permission: economicworldguard.admin
  givechunk:
   description: If you own the chunk you're standing in you can use this command to give it to another player.
-  usage: /givechunk USERNAME
+  usage: /givechunk [player]
   permission: economicworldguard.user
  sellchunk:
   description: If you own the chunk you're standing in you can use this command to sell it back to the server.

@@ -37,7 +37,7 @@ public class main extends JavaPlugin{
 		//Register Commands
 		this.getCommand("buychunk").setExecutor(new commandBuyChunk(config.getBoolean("debug"), bank, config.getInt("chunkBuyPrice"), getWorldGuard(), config.getList("ignoreRegions")));
 		this.getCommand("evictchunk").setExecutor(new commandEvictChunk(config.getBoolean("debug"), getWorldGuard()));
-		this.getCommand("givechunk").setExecutor(new commandGiveChunk(config.getBoolean("debug")));
+		this.getCommand("givechunk").setExecutor(new commandGiveChunk(config.getBoolean("debug"), getWorldGuard()));
 		this.getCommand("sellchunk").setExecutor(new commandSellChunk(config.getBoolean("debug"), bank, config.getInt("chunkSellPrice"), getWorldGuard()));
 	}
 	
