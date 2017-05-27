@@ -1,4 +1,22 @@
 name: economicWorldGuard
 main: org.soylentred.economicworldguard.main
 version: 0.1
+depend: [WorldGuard]
 commands:
+ buychunk:
+  description: Purchase the chunk you're currently in to protect your creations.
+  usage: /buychunk
+  permission: economicworldguard.user
+ evictchunk:
+  description: Admin command to remove a chunk's protection.
+  usage: /evictchunk
+  permission: economicworldguard.admin
+ givechunk:
+  description: If you own the chunk you're standing in you can use this command to give it to another player.
+  usage: /givechunk USERNAME
+  permission: economicworldguard.user
+ sellchunk:
+  description: If you own the chunk you're standing in you can use this command to sell it back to the server.
+  usage: /sellchunk
+  permission: economicworldguard.user
+  
