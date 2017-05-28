@@ -18,8 +18,6 @@ import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion.CircularInheritanceException;
 
-import net.milkbowl.vault.economy.Economy;
-
 public class commandGiveChunk implements CommandExecutor {
 	public boolean debug = false;
 	public WorldGuardPlugin worldGuard;

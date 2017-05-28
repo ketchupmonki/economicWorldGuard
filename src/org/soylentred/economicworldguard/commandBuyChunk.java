@@ -53,7 +53,7 @@ public class commandBuyChunk implements CommandExecutor {
 			RegionContainer container = worldGuard.getRegionContainer();
 			RegionQuery query = container.createQuery();
 			ApplicableRegionSet regions = query.getApplicableRegions(player.getLocation());
-			List<ProtectedRegion> sortedRegions = new ArrayList<ProtectedRegion>();
+			int currentRegions = 0;
 			
 			//Filter out any regions that should be ignored as set in the plugin's config file.
 			for (ProtectedRegion region : regions) {
@@ -64,12 +64,12 @@ public class commandBuyChunk implements CommandExecutor {
 					}
 				}
 				if (!filterOut){
-					sortedRegions.add(region);
+					currentRegions ++;
 				}
 			}
 			
 			// Check for existing regions
-			if (sortedRegions.size() > 0) {
+			if (currentRegions > 0) {
 				player.sendMessage("Chunk can not be bought. There is already a region in this location.");
 				if (debug) {
 					Bukkit.getLogger().info("Region could not be created as there is already a region in this location.");
@@ -79,7 +79,7 @@ public class commandBuyChunk implements CommandExecutor {
 
 			// Check the player can afford a chunk
 			if (bank.getBalance(player.getName()) < buyPrice) {
-				player.sendMessage("Chunk can not be bought. You need a bank balance of at least " + buyPrice + " " + bank.currencyNamePlural() + "to buy the chunk. You only have " + bank.getBalance(player.getName()) + " " + bank.currencyNamePlural() + ".");
+				player.sendMessage("Chunk can not be bought. You need a bank balance of at least " + buyPrice + bank.currencyNamePlural() + "to buy the chunk. You only have " + bank.getBalance(player.getName()) + bank.currencyNamePlural() + ".");
 				if (debug) {
 					Bukkit.getLogger().info("Region could not be created as the player's balance is too low.");
 				}
@@ -123,7 +123,7 @@ public class commandBuyChunk implements CommandExecutor {
 			}
 
 			regionsManage.addRegion(newRegion);
-			player.sendMessage("Chunk purchased.");
+			player.sendMessage("Chunk purchased for " + buyPrice + bank.currencyNamePlural() + ".");
 			if (debug) {
 				Bukkit.getLogger().info("User purchased chunk.");
 			}
