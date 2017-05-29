@@ -1,6 +1,6 @@
 # economicWorldGuard
 ## Description
-The economicWorldGuard allows players to protect their own land on a Minecraft server by purchasing the land on a chunk by chunk basis using in game currency.
+The economicWorldGuard plugin allows players to protect their own land on a Minecraft server by purchasing the land on a chunk by chunk basis using in game currency.
 
 It depends on both the [Vault](https://github.com/MilkBowl/Vault/) and [WorldGuard](https://github.com/sk89q/worldguard) plugins.
 
