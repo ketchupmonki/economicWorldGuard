@@ -23,7 +23,7 @@ debug | false | Print information about command usage in the server logs.
 ignoreRegions | | Allows server admins to create a list of existing regions that players can create their own regions inside of. Regions should be listed one line at a time, following a '-' at the start of the line. See [YML specs](http://www.yaml.org/spec/1.2/spec.html#id2802432) for an example.
 
 ## Information for Server Administrators
-When a player chunk is created the plugin will automatically set 'economicWorldGuard' as its parent region within WorldGuard. This is to allow you to set flags on a region named 'economicWorldGuard' that will affect all regions made within economicWorldGuard.
+When a player chunk is created the plugin will automatically set 'economicWorldGuard' as its parent region within WorldGuard. This is to allow you to set [flags](https://worldguard.enginehub.org/en/latest/regions/flags/) on a region named 'economicWorldGuard' that will affect all regions made within economicWorldGuard.
 
 You will have to create the region named 'economicWorldGuard' yourself to keep this control. Player regions do not need to be located within the 'economicWorldGuard' region so don't worry about your region covering a large area, it need not span more than one block.
 
