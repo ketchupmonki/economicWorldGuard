@@ -14,13 +14,15 @@ Command | Permission | Description
 /givechunk [player] | economicworldguard.user | Give the chunk you're standing in to [player].
 /evictchunk | economicworldguard.admin | Admin command to clear any economicWorldGuard chunk currently stood in.
 
+Tip: Use F3 + G within Minecraft to toggle the visibility of chunk boundaries.
+
 ## Config
 Field | Default | Description
 --------|------------|------------
 chunkBuyPrice | 250 | The price that players can buy a chunk for.
 chunkSellPrice | 125 | The price that players can sell a chunk for.
 debug | false | Print information about command usage in the server logs.
-ignoreRegions | | Allows server admins to create a list of existing regions that players can create their own regions inside of. Regions should be listed one line at a time, following a '-' at the start of the line. See [YML specs](http://www.yaml.org/spec/1.2/spec.html#id2802432) for an example.
+ignoreRegions | | Allows server admins to create a list of existing regions that players can create their own regions inside of. Regions should be listed one line at a time, following a '-' at the start of the line. See [YML specs](http://www.yaml.org/spec/1.2/spec.html#id2802662) for an example.
 
 ## Information for Server Administrators
 When a player chunk is created the plugin will automatically set 'economicWorldGuard' as its parent region within WorldGuard. This is to allow you to set [flags](https://worldguard.enginehub.org/en/latest/regions/flags/) on a region named 'economicWorldGuard' that will affect all regions made within economicWorldGuard.
