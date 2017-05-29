@@ -38,7 +38,7 @@ public class commandGiveChunk implements CommandExecutor {
 				Bukkit.getLogger().info("Command givechunk called by " + player.getDisplayName() + " at " + player.getLocation() + ".");
 			}
 			//Make sure the user is sending the chunk to a player.
-			if (args[0] == null){
+			if (args.length < 1){
 				Bukkit.getLogger().info("Player used the wrong syntax.");
 				sender.sendMessage("Wrong syntax used. Please use /givechunk [player]");
 				return true;

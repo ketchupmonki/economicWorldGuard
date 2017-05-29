@@ -35,7 +35,7 @@ public class commandShareChunk implements CommandExecutor {
 			}
 			
 			//Make sure the user is sharing the chunk to a player.
-			if (args[0] == null){
+			if (args.length < 1){
 				Bukkit.getLogger().info("Player used the wrong syntax.");
 				sender.sendMessage("Wrong syntax used. Please use /sharechunk [player]");
 				return true;
