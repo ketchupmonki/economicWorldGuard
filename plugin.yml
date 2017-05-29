@@ -1,7 +1,9 @@
 name: economicWorldGuard
 main: org.soylentred.economicworldguard.main
 version: 0.1
-depend: [WorldGuard]
+website: https://github.com/ketchupmonki/economicWorldGuard
+description: Allow players to create protected regions via WorldGuard using in game currency on a chunk by chunk basis.
+depend: [WorldGuard, Vault]
 commands:
  buychunk:
   description: Purchase the chunk you're currently in to protect your creations.
@@ -18,5 +20,13 @@ commands:
  sellchunk:
   description: If you own the chunk you're standing in you can use this command to sell it back to the server.
   usage: /sellchunk
+  permission: economicworldguard.user
+ sharechunk:
+  description: Allow another user to build on a chunk you own.
+  usage: /sharechunk [player]
+  permission: economicworldguard.user
+ restrictchunk:
+  description: Stop a player that you previously shared your chunk with from building on your chunk.
+  usage: /restrictchunk [player]
   permission: economicworldguard.user
   

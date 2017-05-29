@@ -39,6 +39,8 @@ public class main extends JavaPlugin{
 		this.getCommand("evictchunk").setExecutor(new commandEvictChunk(config.getBoolean("debug"), getWorldGuard()));
 		this.getCommand("givechunk").setExecutor(new commandGiveChunk(config.getBoolean("debug"), getWorldGuard()));
 		this.getCommand("sellchunk").setExecutor(new commandSellChunk(config.getBoolean("debug"), bank, config.getInt("chunkSellPrice"), getWorldGuard()));
+		this.getCommand("sharechunk").setExecutor(new commandShareChunk(config.getBoolean("debug"), getWorldGuard()));
+		this.getCommand("restrictchunk").setExecutor(new commandRestrictChunk(config.getBoolean("debug"), getWorldGuard()));
 	}
 	
 	public void onDisable(){}
