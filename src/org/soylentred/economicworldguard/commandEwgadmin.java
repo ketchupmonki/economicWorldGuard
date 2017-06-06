@@ -17,10 +17,12 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 public class commandEwgadmin implements CommandExecutor {
 	public boolean debug = false;
 	public WorldGuardPlugin worldGuard;
+	private main pluginInstance = null;
 
-	public commandEwgadmin(boolean debug, WorldGuardPlugin worldGuard) {
+	public commandEwgadmin(boolean debug, WorldGuardPlugin worldGuard, main pluginInstance) {
 		this.debug = debug;
 		this.worldGuard = worldGuard;
+		this.pluginInstance = pluginInstance;
 	}
 
 	@Override
@@ -41,6 +43,10 @@ public class commandEwgadmin implements CommandExecutor {
 					return help(player);
 				case "evict":
 					return evict(player);
+                case "addignored":
+                    return addIgnored(player, args);
+                case "removeignored":
+                    return removeIgnored(player, args);
 				default:
 					player.sendMessage("Invalid argument '" + args[0].toLowerCase() + "'. Use /ewgadmin help to see valid commands.");
 					return false;
@@ -87,8 +93,52 @@ public class commandEwgadmin implements CommandExecutor {
 	
 	public boolean help(Player player){
 		player.sendMessage("Valid economicWorldGuard commands:");
-		player.sendMessage("\"/ecgadmin help\" - View this help.");
-		player.sendMessage("\"/ecgadmin evict\" - Remove any economicWorldGuard chunk currently stood in.");
+		player.sendMessage("\"/ewgadmin help\" - View this help.");
+		player.sendMessage("\"/ewgadmin evict\" - Remove any economicWorldGuard chunk currently stood in.");
+		player.sendMessage("\"/ewgadmin addIgnored [regionName]\" - Add a region to the ignored regions list. See the 'ignoreRegions' options in the config rundown for more info on this.");
+		player.sendMessage("\"/ewgadmin removeIgnored [regionName]\" - Remove a region from the ignored regions list.");
 		return true;
 	}
+	
+    public boolean addIgnored(Player player, String[] args){
+    	if (args.length < 2){
+    		player.sendMessage("Not enough arguments used. Please provide a region name! (\"/ewgadmin addIgnored [regionName]\"");
+    		return true;
+    	}
+    	pluginInstance.ignoreRegions = pluginInstance.config.getStringList("ignoreRegions");
+    	
+    	for (String ignoreRegion : pluginInstance.ignoreRegions){
+    		if(ignoreRegion.equals(args[1])){
+    			player.sendMessage(args[1] + " is already in the ignoredRegions list!");
+    			return true;
+    		}
+    	}
+    	pluginInstance.ignoreRegions.add(args[1]);
+        pluginInstance.config.set("ignoreRegions", pluginInstance.ignoreRegions);
+        pluginInstance.saveConfig();
+        pluginInstance.registerCommands();
+        player.sendMessage(args[1] + " successfully added to the ignoredRegions list!");
+        return true;
+    }
+    
+    public boolean removeIgnored(Player player, String[] args){
+    	if (args.length < 2){
+    		player.sendMessage("Not enough arguments used. Please provide a region name! (\"/ewgadmin removeIgnored [regionName]\"");
+    		return true;
+    	}
+    	pluginInstance.ignoreRegions = pluginInstance.config.getStringList("ignoreRegions");
+    	
+    	for (String ignoreRegion : pluginInstance.ignoreRegions){
+    		if(ignoreRegion.equals(args[1])){
+    			pluginInstance.ignoreRegions.remove(ignoreRegion);
+    	        pluginInstance.config.set("ignoreRegions", pluginInstance.ignoreRegions);
+    	        pluginInstance.saveConfig();
+    	        pluginInstance.registerCommands();
+    	        player.sendMessage(args[1] + " successfully removed from the ignoredRegions list!");
+    			return true;
+    		}	
+    	}
+    	player.sendMessage(args[1] + " couldn't be found in the ignore regions list, so wasn't removed!");
+        return true;
+    }
 }

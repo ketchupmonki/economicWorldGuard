@@ -15,6 +15,7 @@ import net.milkbowl.vault.economy.Economy;
 public class main extends JavaPlugin{
 	FileConfiguration config = getConfig();
 	private static Economy bank = null;
+	public List<String> ignoreRegions;
 
 	public void onEnable(){
 		//Get configs
@@ -22,10 +23,11 @@ public class main extends JavaPlugin{
 		config.addDefault("chunkBuyPrice", 250);
 		config.addDefault("chunkSellPrice", 125);
 		config.addDefault("debug", false);
-		List<String> ignoreRegions = Arrays.asList();
+		ignoreRegions = Arrays.asList();
 		config.addDefault("ignoreRegions", ignoreRegions);
 	    config.options().copyDefaults(true);
 	    saveConfig();
+	    ignoreRegions = config.getStringList("ignoreRegions");
 	    
 	    //Load vault
         if (!setupEconomy() ) {
@@ -35,12 +37,7 @@ public class main extends JavaPlugin{
         }
 
 		//Register Commands
-		this.getCommand("buychunk").setExecutor(new commandBuyChunk(config.getBoolean("debug"), bank, config.getInt("chunkBuyPrice"), getWorldGuard(), config.getStringList("ignoreRegions")));
-		this.getCommand("ewgadmin").setExecutor(new commandEwgadmin(config.getBoolean("debug"), getWorldGuard()));
-		this.getCommand("givechunk").setExecutor(new commandGiveChunk(config.getBoolean("debug"), getWorldGuard()));
-		this.getCommand("sellchunk").setExecutor(new commandSellChunk(config.getBoolean("debug"), bank, config.getInt("chunkSellPrice"), getWorldGuard()));
-		this.getCommand("sharechunk").setExecutor(new commandShareChunk(config.getBoolean("debug"), getWorldGuard()));
-		this.getCommand("restrictchunk").setExecutor(new commandRestrictChunk(config.getBoolean("debug"), getWorldGuard()));
+		registerCommands();
 	}
 	
 	public void onDisable(){}
@@ -66,5 +63,14 @@ public class main extends JavaPlugin{
         }
         bank = rsp.getProvider();
         return bank != null;
+    }
+    
+    public void registerCommands(){
+		this.getCommand("buychunk").setExecutor(new commandBuyChunk(config.getBoolean("debug"), bank, config.getInt("chunkBuyPrice"), getWorldGuard(), ignoreRegions));
+		this.getCommand("ewgadmin").setExecutor(new commandEwgadmin(config.getBoolean("debug"), getWorldGuard(), this));
+		this.getCommand("givechunk").setExecutor(new commandGiveChunk(config.getBoolean("debug"), getWorldGuard()));
+		this.getCommand("sellchunk").setExecutor(new commandSellChunk(config.getBoolean("debug"), bank, config.getInt("chunkSellPrice"), getWorldGuard()));
+		this.getCommand("sharechunk").setExecutor(new commandShareChunk(config.getBoolean("debug"), getWorldGuard()));
+		this.getCommand("restrictchunk").setExecutor(new commandRestrictChunk(config.getBoolean("debug"), getWorldGuard()));
     }
 }
