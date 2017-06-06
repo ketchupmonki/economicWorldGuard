@@ -9,9 +9,9 @@ commands:
   description: Purchase the chunk you're currently in to protect your creations.
   usage: /buychunk
   permission: economicworldguard.user
- evictchunk:
-  description: Admin command to remove a chunk's protection.
-  usage: /evictchunk
+ ewgadmin:
+  description: (EconomicWorldGuard Admin) Administrator tools for economicWorldGuard.
+  usage: /ewgadmin
   permission: economicworldguard.admin
  givechunk:
   description: If you own the chunk you're standing in you can use this command to give it to another player.
