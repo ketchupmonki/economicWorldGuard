@@ -1,6 +1,5 @@
 package org.soylentred.economicworldguard;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -30,12 +29,12 @@ public class commandBuyChunk implements CommandExecutor {
 	Economy bank;
 	List<String> ignoreRegions;
 
-	public commandBuyChunk(boolean debug, Economy bank, int buyPrice, WorldGuardPlugin worldGuard, List<?> list) {
+	public commandBuyChunk(boolean debug, Economy bank, int buyPrice, WorldGuardPlugin worldGuard, List<String> list) {
 		this.debug = debug;
 		this.worldGuard = worldGuard;
 		this.buyPrice = buyPrice;
 		this.bank = bank;
-		this.ignoreRegions = (List<String>) list;
+		this.ignoreRegions = list;
 	}
 
 	@Override
@@ -78,8 +77,8 @@ public class commandBuyChunk implements CommandExecutor {
 			}
 
 			// Check the player can afford a chunk
-			if (bank.getBalance(player.getName()) < buyPrice) {
-				player.sendMessage("Chunk can not be bought. You need a bank balance of at least " + buyPrice + bank.currencyNamePlural() + "to buy the chunk. You only have " + bank.getBalance(player.getName()) + bank.currencyNamePlural() + ".");
+			if (bank.getBalance(player) < buyPrice) {
+				player.sendMessage("Chunk can not be bought. You need a bank balance of at least " + buyPrice + bank.currencyNamePlural() + "to buy the chunk. You only have " + bank.getBalance(player) + bank.currencyNamePlural() + ".");
 				if (debug) {
 					Bukkit.getLogger().info("Region could not be created as the player's balance is too low.");
 				}
@@ -88,7 +87,7 @@ public class commandBuyChunk implements CommandExecutor {
 
 			// Buy the chunk
 			// Withdraw the money
-			bank.withdrawPlayer(player.getName(), buyPrice);
+			bank.withdrawPlayer(player, buyPrice);
 
 			//Collect basic info for the region
 			int chunkX = (int) (16 * (Math.floor(Math.abs(player.getLocation().getBlockX() / 16))));
