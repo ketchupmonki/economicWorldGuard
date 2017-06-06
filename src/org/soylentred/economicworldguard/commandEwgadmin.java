@@ -47,6 +47,8 @@ public class commandEwgadmin implements CommandExecutor {
                     return addIgnored(player, args);
                 case "removeignored":
                     return removeIgnored(player, args);
+                case "listignored":
+                	return listIgnored(player);
 				default:
 					player.sendMessage("Invalid argument '" + args[0].toLowerCase() + "'. Use /ewgadmin help to see valid commands.");
 					return false;
@@ -102,7 +104,7 @@ public class commandEwgadmin implements CommandExecutor {
 	
     public boolean addIgnored(Player player, String[] args){
     	if (args.length < 2){
-    		player.sendMessage("Not enough arguments used. Please provide a region name! (\"/ewgadmin addIgnored [regionName]\"");
+    		player.sendMessage("Not enough arguments used. Please provide a region name! \"/ewgadmin addIgnored [regionName]\"");
     		return true;
     	}
     	pluginInstance.ignoreRegions = pluginInstance.config.getStringList("ignoreRegions");
@@ -123,7 +125,7 @@ public class commandEwgadmin implements CommandExecutor {
     
     public boolean removeIgnored(Player player, String[] args){
     	if (args.length < 2){
-    		player.sendMessage("Not enough arguments used. Please provide a region name! (\"/ewgadmin removeIgnored [regionName]\"");
+    		player.sendMessage("Not enough arguments used. Please provide a region name! \"/ewgadmin removeIgnored [regionName]\"");
     		return true;
     	}
     	pluginInstance.ignoreRegions = pluginInstance.config.getStringList("ignoreRegions");
@@ -141,4 +143,18 @@ public class commandEwgadmin implements CommandExecutor {
     	player.sendMessage(args[1] + " couldn't be found in the ignore regions list, so wasn't removed!");
         return true;
     }
+    
+	private boolean listIgnored(Player player) {
+		String ignoredList = "";
+		for (String ignoreRegion : pluginInstance.ignoreRegions){
+			ignoredList = ignoredList + ignoreRegion + ", ";
+		}
+		if(ignoredList.length() > 0){
+			player.sendMessage("The following regions are currently in the ignoreRegions list:");
+			player.sendMessage(ignoredList.substring(0, ignoredList.length() - 2) + ".");
+		}else{
+			player.sendMessage("The ignoreRegions list is currently empty!");
+		}
+		return true;
+	}
 }
