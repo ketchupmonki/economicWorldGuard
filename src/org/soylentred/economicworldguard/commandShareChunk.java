@@ -73,6 +73,7 @@ public class commandShareChunk implements CommandExecutor {
 						regionMan.getRegion(region.getId()).setMembers(currentMembers);
 						
 						player.sendMessage("Sharing chunk with " + args[0] + ".");
+						Bukkit.getPlayer(args[0]).sendMessage(player.getName() + " has shared a chunk with you.");
 						if (debug) {
 							Bukkit.getLogger().info("Region " + region.getId() + " shared with " + Bukkit.getPlayer(args[0]).toString());
 						}
