@@ -1,0 +1,24 @@
+apply plugin: "java"
+	version = "0.1"
+	sourceCompatibility = "1.8"
+	targetCompatibility = "1.8"
+
+	repositories {
+		mavenCentral()
+		maven {
+			url "http://hub.spigotmc.org/nexus/content/repositories/snapshots/"
+		}
+		maven {
+			url "http://nexus.hc.to/content/repositories/pub_releases"
+		}
+		maven {
+			url "http://maven.sk89q.com/artifactory/repo/"
+		}
+	}
+	
+	dependencies {
+		compile "org.bukkit:bukkit:1.11.2-R0.1-SNAPSHOT"
+		compile "net.milkbowl.vault:VaultAPI:1.6"
+		compile 'com.sk89q:worldedit:6.0.0-SNAPSHOT'
+		compile 'com.sk89q.worldguard:worldguard-legacy:6.2'
+	}
