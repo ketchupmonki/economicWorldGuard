@@ -90,19 +90,14 @@ public class commandBuyChunk implements CommandExecutor {
 			bank.withdrawPlayer(player, buyPrice);
 
 			//Collect basic info for the region
-			int chunkX = (int) (16 * (Math.floor(Math.abs(player.getLocation().getBlockX() / 16))));
-			if(player.getLocation().getBlockX() < 0){
-				chunkX = (chunkX * -1) - 15;
-			}
-			int chunkZ = (int) (16 * (Math.floor(Math.abs(player.getLocation().getBlockZ() / 16))));
-			if(player.getLocation().getBlockZ() < 0){
-				chunkZ = (chunkZ * -1) - 15;
-			}
-			String regionName = player.getName() + (chunkX / 16) + (chunkZ / 16);
+			int[] chunkLocation = common.getChunkLocation(player.getLocation().getBlockX(), player.getLocation().getBlockZ());
+			int[] chunkBounds = common.getChunkBounds(chunkLocation[0], chunkLocation[1]);
+			
+			String regionName = player.getName() + Integer.toString(chunkLocation[0]) + Integer.toString(chunkLocation[1]);
 
 			// Create the region
-			BlockVector loc1 = new BlockVector(chunkX, 0, chunkZ);
-			BlockVector loc2 = new BlockVector(chunkX + 15, 256, chunkZ + 15);
+			BlockVector loc1 = new BlockVector(chunkBounds[0], 0, chunkBounds[1]);
+			BlockVector loc2 = new BlockVector(chunkBounds[2], 256, chunkBounds[3]);
 			ProtectedRegion newRegion = new ProtectedCuboidRegion(regionName, loc1, loc2);
 
 			// Set the owner
