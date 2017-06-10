@@ -17,7 +17,7 @@ apply plugin: "java"
 	}
 	
 	dependencies {
-		compile "org.bukkit:bukkit:1.11.2-R0.1-SNAPSHOT"
+		compile "org.bukkit:bukkit:1.12-R0.1-SNAPSHOT"
 		compile "net.milkbowl.vault:VaultAPI:1.6"
 		compile 'com.sk89q:worldedit:6.0.0-SNAPSHOT'
 		compile 'com.sk89q.worldguard:worldguard-legacy:6.2'

@@ -12,26 +12,24 @@ import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.bukkit.RegionQuery;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion.CircularInheritanceException;
+import com.sk89q.worldguard.domains.DefaultDomain;
 
 import net.milkbowl.vault.economy.Economy;
 
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.domains.DefaultDomain;
 
 public class commandBuyChunk implements CommandExecutor {
 	public boolean debug = false;
-	public WorldGuardPlugin worldGuard;
 	private int buyPrice = 250;
 	Economy bank;
 	List<String> ignoreRegions;
 
-	public commandBuyChunk(boolean debug, Economy bank, int buyPrice, WorldGuardPlugin worldGuard, List<String> list) {
+	public commandBuyChunk(boolean debug, Economy bank, int buyPrice, List<String> list) {
 		this.debug = debug;
-		this.worldGuard = worldGuard;
 		this.buyPrice = buyPrice;
 		this.bank = bank;
 		this.ignoreRegions = list;
@@ -49,7 +47,7 @@ public class commandBuyChunk implements CommandExecutor {
 			}
 
 			// Get regions at the player's location
-			RegionContainer container = worldGuard.getRegionContainer();
+			RegionContainer container = common.worldGuardInst.getRegionContainer();
 			RegionQuery query = container.createQuery();
 			ApplicableRegionSet regions = query.getApplicableRegions(player.getLocation());
 			int currentRegions = 0;
@@ -102,10 +100,10 @@ public class commandBuyChunk implements CommandExecutor {
 
 			// Set the owner
 			DefaultDomain regionOwner = new DefaultDomain();
-			regionOwner.addPlayer(player.getName());
+			regionOwner.addPlayer(player.getUniqueId());
 			newRegion.setOwners(regionOwner);
 			newRegion.setMembers(regionOwner);
-
+			newRegion.setFlag(common.EconomicWorldGuard, StateFlag.State.ALLOW);
 			// Start manager
 			RegionManager regionsManage = container.get(player.getWorld());
 

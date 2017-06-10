@@ -9,6 +9,8 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
+import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 
 import net.milkbowl.vault.economy.Economy;
 
@@ -35,12 +37,28 @@ public class main extends JavaPlugin{
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
-
+        
+        //Set WorldGuardPlugin
+        common.worldGuardInst = getWorldGuard();
+        
 		//Register Commands
 		registerCommands();
 	}
 	
 	public void onDisable(){}
+	
+	public void onLoad(){
+        //Register economicWorldGuard WorldGuard flag
+        FlagRegistry registry = getWorldGuard().getFlagRegistry();
+        try {
+        	// register our flag with the registry
+            registry.register(common.EconomicWorldGuard);
+        } catch (FlagConflictException e) {
+         	Bukkit.getLogger().info("Economic World Guard flag 'ewg' being used by something else. Disabling economicWorldGuard...");
+           	getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+	}
 	
 	private WorldGuardPlugin getWorldGuard() {
 	    Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
@@ -66,11 +84,11 @@ public class main extends JavaPlugin{
     }
     
     public void registerCommands(){
-		this.getCommand("buychunk").setExecutor(new commandBuyChunk(config.getBoolean("debug"), bank, config.getInt("chunkBuyPrice"), getWorldGuard(), ignoreRegions));
-		this.getCommand("ewgadmin").setExecutor(new commandEwgadmin(config.getBoolean("debug"), getWorldGuard(), this));
-		this.getCommand("givechunk").setExecutor(new commandGiveChunk(config.getBoolean("debug"), getWorldGuard()));
-		this.getCommand("sellchunk").setExecutor(new commandSellChunk(config.getBoolean("debug"), bank, config.getInt("chunkSellPrice"), getWorldGuard()));
-		this.getCommand("sharechunk").setExecutor(new commandShareChunk(config.getBoolean("debug"), getWorldGuard()));
-		this.getCommand("restrictchunk").setExecutor(new commandRestrictChunk(config.getBoolean("debug"), getWorldGuard()));
+		this.getCommand("buychunk").setExecutor(new commandBuyChunk(config.getBoolean("debug"), bank, config.getInt("chunkBuyPrice"), ignoreRegions));
+		this.getCommand("ewgadmin").setExecutor(new commandEwgadmin(config.getBoolean("debug"), this));
+		this.getCommand("givechunk").setExecutor(new commandGiveChunk(config.getBoolean("debug")));
+		this.getCommand("sellchunk").setExecutor(new commandSellChunk(config.getBoolean("debug"), bank, config.getInt("chunkSellPrice")));
+		this.getCommand("sharechunk").setExecutor(new commandShareChunk(config.getBoolean("debug")));
+		this.getCommand("restrictchunk").setExecutor(new commandRestrictChunk(config.getBoolean("debug")));
     }
 }
