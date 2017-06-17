@@ -29,4 +29,8 @@ commands:
   description: Stop a player that you previously shared your chunk with from building on your chunk.
   usage: /restrictchunk [player]
   permission: economicworldguard.user
+ renamechunk:
+  description: Allows a player to rename their own chunks.
+  usage: /renamechunk [newName]
+  permission: economicworldguard.rename
   

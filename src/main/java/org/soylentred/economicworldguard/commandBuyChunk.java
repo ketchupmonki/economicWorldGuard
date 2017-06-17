@@ -8,16 +8,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.bukkit.RegionQuery;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.flags.StateFlag;
-import com.sk89q.worldguard.protection.managers.RegionManager;
-import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion.CircularInheritanceException;
-import com.sk89q.worldguard.domains.DefaultDomain;
 
 import net.milkbowl.vault.economy.Economy;
 
@@ -86,35 +80,7 @@ public class commandBuyChunk implements CommandExecutor {
 			// Buy the chunk
 			// Withdraw the money
 			bank.withdrawPlayer(player, buyPrice);
-
-			//Collect basic info for the region
-			int[] chunkLocation = common.getChunkLocation(player.getLocation().getBlockX(), player.getLocation().getBlockZ());
-			int[] chunkBounds = common.getChunkBounds(chunkLocation[0], chunkLocation[1]);
-			
-			String regionName = player.getName() + Integer.toString(chunkLocation[0]) + Integer.toString(chunkLocation[1]);
-
-			// Create the region
-			BlockVector loc1 = new BlockVector(chunkBounds[0], 0, chunkBounds[1]);
-			BlockVector loc2 = new BlockVector(chunkBounds[2], 256, chunkBounds[3]);
-			ProtectedRegion newRegion = new ProtectedCuboidRegion(regionName, loc1, loc2);
-
-			// Set the owner
-			DefaultDomain regionOwner = new DefaultDomain();
-			regionOwner.addPlayer(player.getUniqueId());
-			newRegion.setOwners(regionOwner);
-			newRegion.setMembers(regionOwner);
-			newRegion.setFlag(common.EconomicWorldGuard, StateFlag.State.ALLOW);
-			// Start manager
-			RegionManager regionsManage = container.get(player.getWorld());
-
-			// Set the parent chunk as 'economicworldguard'
-			try {
-				newRegion.setParent(regionsManage.getRegion("economicWorldGuard"));
-			} catch (CircularInheritanceException e) {
-				Bukkit.getLogger().info("Bad world.");
-			}
-
-			regionsManage.addRegion(newRegion);
+			common.createChunk(player);
 			player.sendMessage("Chunk purchased for " + buyPrice + bank.currencyNamePlural() + ".");
 			if (debug) {
 				Bukkit.getLogger().info("User purchased chunk.");

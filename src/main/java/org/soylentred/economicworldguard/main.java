@@ -25,6 +25,7 @@ public class main extends JavaPlugin{
 		config.addDefault("chunkBuyPrice", 250);
 		config.addDefault("chunkSellPrice", 125);
 		config.addDefault("debug", false);
+		config.addDefault("version", 0.1);
 		ignoreRegions = Arrays.asList();
 		config.addDefault("ignoreRegions", ignoreRegions);
 	    config.options().copyDefaults(true);
@@ -40,6 +41,9 @@ public class main extends JavaPlugin{
         
         //Set WorldGuardPlugin
         common.worldGuardInst = getWorldGuard();
+        
+        //Apply any changes needed post plugin upgrade
+        upgrade.check(this);
         
 		//Register Commands
 		registerCommands();
@@ -90,5 +94,6 @@ public class main extends JavaPlugin{
 		this.getCommand("sellchunk").setExecutor(new commandSellChunk(config.getBoolean("debug"), bank, config.getInt("chunkSellPrice")));
 		this.getCommand("sharechunk").setExecutor(new commandShareChunk(config.getBoolean("debug")));
 		this.getCommand("restrictchunk").setExecutor(new commandRestrictChunk(config.getBoolean("debug")));
+		this.getCommand("renamechunk").setExecutor(new commandRenameChunk(config.getBoolean("debug")));
     }
 }
